@@ -1,0 +1,98 @@
+﻿@page "{searchString?}"
+@*
+        The @page  Razor directive makes the file an MVC action, which means that it can handle requests. @page  must be the first Razor directive on a page.
+
+        The @model directive specifies the type of the model passed to the Razor Page. 
+        In the preceding example, the @model line makes the PageModel-derived class available to the Razor Page. 
+        The model is used in the @Html.DisplayNameFor and @Html.DisplayFor HTML Helpers on the page.
+*@
+
+@model RazorPagesMovie.Pages.Movies.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+@*
+    https://docs.microsoft.com/en-us/aspnet/core/tutorials/razor-pages/page?view=aspnetcore-3.1&tabs=visual-studio
+
+    The DisplayNameFor HTML Helper inspects the Title property referenced in the lambda expression to determine the display name.
+    The lambda expression is inspected rather than evaluated.
+    That means there is no access violation when model, model.Movie, or model.Movie[0] is null or empty.
+    When the lambda expression is evaluated (for example, with @Html.DisplayFor(modelItem => item.Title)),
+    the model's property values are evaluated.
+
+    MVC parses the expression instead of actually executing it. This lets it find that right property and attribute without needing there to be an element in the list.
+
+    It's worth noting that the parameter (model above) doesn't even need to be used. This works, too:
+
+    @Html.DisplayNameFor(dummy => Model.Names[0].FullName)
+
+    As does this:
+        @{ Namespace.Of.PersonNameViewModel dummyModel = null; }
+        @Html.DisplayNameFor(dummyParam => dummyModel.FullName)
+*@
+
+@{ RazorPagesMovie.Models.Movie dummyModel = null; }
+
+
+<form>
+    <p>
+        <select asp-for="MovieGenre" asp-items="Model.Genres">
+            <option value="">All</option>
+        </select>
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(dummy => Model.Movie[0].Title)
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(m => m.Movie[0].ReleaseDate)*@
+
+                @Html.DisplayNameFor(dummyParam => dummyModel.ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Movie[0].Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x=>Model.Movie[0].Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Movie)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

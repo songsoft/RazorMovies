@@ -1,0 +1,55 @@
+﻿@page
+@model IndexModel
+@*
+    The PageModel base class contains a ViewData dictionary property that can be used to pass data to a View.
+    Objects are added to the ViewData dictionary using a key/value pattern.
+    In the preceding sample, the "Title" property is added to the ViewData dictionary.
+*@
+
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <div>
+
+        @if (Model.NewMovies.Any())
+        {
+            <h3>New Movies</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(dummy => Model.NewMovies[0].Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(dummyParam => Model.NewMovies[0].ReleaseDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.NewMovies[0].Genre)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.NewMovies)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReleaseDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Genre)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
